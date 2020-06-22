@@ -1,0 +1,16 @@
+name: "CI"
+on:
+  pull_request:
+  push:
+jobs:
+  tests:
+    os: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cachix/install-nix-action@v10
+    - uses: cachix/cachix-action@v6
+      with:
+        name: domenkozar
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - run: nix-build ci.nix
